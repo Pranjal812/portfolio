@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pranjal Patil — Full Stack Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:#0F172A; --surface:#1E293B; --surface2:#263447; --border:#334155;
+  --accent:#38BDF8; --accent2:#818CF8; --text:#F8FAFC; --muted:#94A3B8;
+  --dim:#64748B; --green:#34D399;
+}
+html { scroll-behavior: smooth; }
+body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); font-size:15px; line-height:1.7; overflow-x:hidden; }
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:var(--bg); }
+::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 6vw; height:60px;
+  background:rgba(15,23,42,0.88); backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(51,65,85,0.6);
+}
+.nav-logo { font-family:'Fira Code',monospace; font-size:14px; color:var(--accent); text-decoration:none; }
+.nav-logo span { color:var(--muted); }
+.nav-links { display:flex; gap:2rem; list-style:none; }
+.nav-links a { font-size:13px; color:var(--muted); text-decoration:none; font-family:'Fira Code',monospace; transition:color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color:var(--accent); }
+.hamburger { display:none; background:none; border:none; color:var(--muted); cursor:pointer; }
+#hero {
+  min-height:100vh; display:flex; align-items:center;
+  padding:8rem 6vw 4rem; position:relative; overflow:hidden;
+}
+.hero-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center;
+  max-width:1100px; margin:0 auto; width:100%; position:relative; z-index:1;
+}
+.hero-tag { font-family:'Fira Code',monospace; font-size:13px; color:var(--accent); margin-bottom:1.2rem; display:flex; align-items:center; gap:8px; }
+.hero-tag::before { content:''; width:32px; height:1px; background:var(--accent); }
+.hero-name { font-size:clamp(2.4rem,5vw,3.8rem); font-weight:600; line-height:1.1; letter-spacing:-0.03em; margin-bottom:0.75rem; }
+.hero-name .hi { color:var(--muted); font-weight:300; }
+.hero-name .highlight { color:var(--accent); }
+.hero-role { font-size:15px; color:var(--muted); margin-bottom:1.5rem; }
+.hero-role strong { color:var(--accent2); font-weight:500; }
+.hero-desc { font-size:15px; color:var(--muted); max-width:480px; line-height:1.8; margin-bottom:2.5rem; }
+.hero-btns { display:flex; gap:1rem; flex-wrap:wrap; }
+.btn { font-size:13px; font-weight:500; padding:11px 24px; border-radius:6px; text-decoration:none; transition:all 0.2s; display:inline-flex; align-items:center; gap:6px; font-family:'Fira Code',monospace; cursor:pointer; border:none; }
+.btn-primary { background:var(--accent); color:var(--bg); border:1px solid var(--accent); }
+.btn-primary:hover { background:#7dd3fc; }
+.btn-ghost { background:transparent; color:var(--accent); border:1px solid var(--border); }
+.btn-ghost:hover { border-color:var(--accent); background:rgba(56,189,248,0.06); }
+.terminal { background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden; font-family:'Fira Code',monospace; }
+.terminal-bar { background:var(--surface2); padding:10px 16px; display:flex; align-items:center; gap:8px; border-bottom:1px solid var(--border); }
+.dot { width:10px; height:10px; border-radius:50%; }
+.dot.r { background:#FF5F57; } .dot.y { background:#FEBC2E; } .dot.g { background:#28C840; }
+.t-title { font-size:11px; color:var(--dim); margin:0 auto; }
+.terminal-body { padding:1.5rem; font-size:13px; line-height:2.1; }
+.t-line { display:block; }
+.t-prompt { color:var(--green); } .t-out { color:var(--muted); }
+.t-key { color:var(--accent); } .t-val { color:var(--accent2); } .t-str { color:#86EFAC; }
+.cursor { display:inline-block; width:8px; height:14px; background:var(--accent); margin-left:2px; animation:blink 1s step-end infinite; vertical-align:middle; }
+@keyframes blink { 50% { opacity:0; } }
+section { padding:6rem 6vw; }
+.section-inner { max-width:1100px; margin:0 auto; }
+.eyebrow { font-family:'Fira Code',monospace; font-size:12px; color:var(--accent); letter-spacing:0.1em; margin-bottom:0.6rem; }
+.section-title { font-size:clamp(1.6rem,3vw,2rem); font-weight:600; letter-spacing:-0.025em; margin-bottom:3rem; display:flex; align-items:center; gap:1rem; }
+.section-title::after { content:''; flex:1; height:1px; background:var(--border); max-width:300px; }
+#about .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; }
+#about p { font-size:15px; color:var(--muted); line-height:1.85; margin-bottom:1rem; }
+#about p strong { color:var(--text); font-weight:500; }
+.about-btns { margin-top:2rem; display:flex; gap:0.75rem; flex-wrap:wrap; }
+.about-stats { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+.stat-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1.25rem; text-align:center; transition:border-color 0.2s; }
+.stat-card:hover { border-color:var(--accent); }
+.stat-num { font-family:'Fira Code',monospace; font-size:1.8rem; font-weight:500; color:var(--accent); display:block; line-height:1; margin-bottom:0.4rem; }
+.stat-label { font-size:12px; color:var(--muted); letter-spacing:0.04em; }
+#skills { background:var(--surface); }
+.skills-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.25rem; }
+.skill-group { background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:1.5rem; transition:border-color 0.2s, transform 0.2s; }
+.skill-group:hover { border-color:var(--accent); transform:translateY(-2px); }
+.sg-icon { font-size:1.3rem; margin-bottom:0.75rem; }
+.sg-name { font-size:12px; letter-spacing:0.08em; color:var(--accent); font-weight:500; text-transform:uppercase; margin-bottom:1rem; font-family:'Fira Code',monospace; }
+.chips { display:flex; flex-wrap:wrap; gap:6px; }
+.chip { font-size:12px; padding:4px 10px; background:var(--surface2); border:1px solid var(--border); border-radius:4px; color:var(--muted); font-family:'Fira Code',monospace; transition:all 0.15s; }
+.chip:hover { border-color:var(--accent); color:var(--accent); }
+.chip.lrn { border-color:rgba(129,140,248,0.4); color:var(--accent2); background:rgba(129,140,248,0.06); }
+.chip.lrn::after { content:' *'; font-size:10px; }
+.projects-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:1.5rem; }
+.pcard { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:1.75rem; display:flex; flex-direction:column; transition:border-color 0.2s, transform 0.2s; position:relative; overflow:hidden; }
+.pcard::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--accent),var(--accent2)); opacity:0; transition:opacity 0.2s; }
+.pcard:hover { border-color:rgba(56,189,248,0.4); transform:translateY(-3px); }
+.pcard:hover::before { opacity:1; }
+.pcard-head { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:1rem; }
+.pcard-icon { font-size:1.5rem; width:44px; height:44px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; display:flex; align-items:center; justify-content:center; }
+.pcard-links { display:flex; gap:6px; }
+.plink { font-family:'Fira Code',monospace; font-size:11px; padding:4px 10px; border:1px solid var(--border); border-radius:4px; color:var(--muted); text-decoration:none; transition:all 0.15s; white-space:nowrap; }
+.plink:hover { border-color:var(--accent); color:var(--accent); }
+.pcard-title { font-size:17px; font-weight:600; letter-spacing:-0.01em; margin-bottom:0.5rem; }
+.pcard-desc { font-size:13.5px; color:var(--muted); line-height:1.7; margin-bottom:1.25rem; flex:1; }
+.pcard-stack { display:flex; flex-wrap:wrap; gap:6px; }
+.stag { font-family:'Fira Code',monospace; font-size:11px; padding:3px 9px; background:rgba(56,189,248,0.08); border:1px solid rgba(56,189,248,0.2); border-radius:3px; color:var(--accent); }
+#education { background:var(--surface); }
+.edu-card { background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:2rem 2.5rem; display:flex; gap:2rem; align-items:flex-start; max-width:700px; }
+.edu-icon { font-size:2rem; flex-shrink:0; width:56px; height:56px; background:rgba(56,189,248,0.1); border:1px solid rgba(56,189,248,0.2); border-radius:10px; display:flex; align-items:center; justify-content:center; }
+.edu-degree { font-size:17px; font-weight:600; margin-bottom:0.3rem; }
+.edu-school { font-size:14px; color:var(--accent); margin-bottom:0.5rem; }
+.edu-meta { font-size:13px; color:var(--muted); }
+.edu-badge { display:inline-block; margin-top:0.75rem; font-family:'Fira Code',monospace; font-size:11px; padding:4px 12px; background:rgba(52,211,153,0.1); border:1px solid rgba(52,211,153,0.25); border-radius:20px; color:var(--green); }
+.contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:start; }
+.contact-intro { font-size:15px; color:var(--muted); line-height:1.8; margin-bottom:2rem; }
+.contact-intro strong { color:var(--text); }
+.clinks { display:flex; flex-direction:column; gap:12px; }
+.citem { display:flex; align-items:center; gap:12px; padding:14px 18px; background:var(--surface); border:1px solid var(--border); border-radius:8px; text-decoration:none; color:var(--text); transition:all 0.2s; font-size:14px; }
+.citem:hover { border-color:var(--accent); color:var(--accent); }
+.citem-icon { font-size:1.1rem; width:32px; text-align:center; flex-shrink:0; }
+.cform { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:2rem; }
+.fg { margin-bottom:1.25rem; }
+.fg label { display:block; font-size:12px; color:var(--muted); margin-bottom:6px; font-family:'Fira Code',monospace; letter-spacing:0.05em; }
+.fg input, .fg textarea { width:100%; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:10px 14px; color:var(--text); font-family:'Inter',sans-serif; font-size:14px; outline:none; transition:border-color 0.2s; resize:vertical; }
+.fg input:focus, .fg textarea:focus { border-color:var(--accent); }
+.fg textarea { min-height:100px; }
+.fsub { width:100%; background:var(--accent); color:var(--bg); border:none; border-radius:6px; padding:12px; font-family:'Fira Code',monospace; font-size:13px; font-weight:500; cursor:pointer; transition:background 0.2s; }
+.fsub:hover { background:#7dd3fc; }
+footer { text-align:center; padding:2.5rem; border-top:1px solid var(--border); font-family:'Fira Code',monospace; font-size:12px; color:var(--dim); }
+footer a { color:var(--accent); text-decoration:none; }
+.bg-grid { position:fixed; inset:0; z-index:-1; pointer-events:none; background-image:linear-gradient(rgba(56,189,248,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(56,189,248,0.03) 1px,transparent 1px); background-size:60px 60px; }
+.glow { position:absolute; border-radius:50%; filter:blur(80px); pointer-events:none; z-index:0; }
+.glow1 { width:500px; height:500px; background:rgba(56,189,248,0.07); top:-100px; right:-100px; }
+.glow2 { width:400px; height:400px; background:rgba(129,140,248,0.06); bottom:0; left:-50px; }
+.fade-up { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+.fade-up.visible { opacity:1; transform:translateY(0); }
+
+/* ── Scroll progress bar ── */
+#progress-bar { position:fixed; top:0; left:0; height:2px; background:linear-gradient(90deg,var(--accent),var(--accent2)); width:0%; z-index:999; transition:width 0.1s linear; }
+
+/* ── Nav slide-in ── */
+@keyframes navSlide { from { opacity:0; transform:translateY(-100%); } to { opacity:1; transform:translateY(0); } }
+nav { animation: navSlide 0.5s ease forwards; }
+
+/* ── Hero stagger ── */
+@keyframes heroFade { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+.hero-tag   { animation: heroFade 0.6s ease 0.2s both; }
+.hero-name  { animation: heroFade 0.6s ease 0.35s both; }
+.hero-role  { animation: heroFade 0.6s ease 0.5s both; }
+.hero-desc  { animation: heroFade 0.6s ease 0.6s both; }
+.hero-btns  { animation: heroFade 0.6s ease 0.75s both; }
+
+/* ── Floating glows ── */
+@keyframes floatA { 0%,100% { transform:translate(0,0) scale(1); } 50% { transform:translate(30px,-40px) scale(1.08); } }
+@keyframes floatB { 0%,100% { transform:translate(0,0) scale(1); } 50% { transform:translate(-25px,35px) scale(1.06); } }
+.glow1 { animation: floatA 10s ease-in-out infinite; }
+.glow2 { animation: floatB 13s ease-in-out infinite; }
+
+/* ── Card shine on hover ── */
+.pcard { overflow:hidden; }
+.pcard::after {
+  content:''; position:absolute; top:-60%; left:-60%;
+  width:60%; height:220%; background:linear-gradient(105deg,transparent 40%,rgba(56,189,248,0.07) 50%,transparent 60%);
+  transform:skewX(-20deg); transition:left 0.55s ease;
+}
+.pcard:hover::after { left:160%; }
+
+/* ── Stat card count-up glow ── */
+@keyframes statPop { 0% { transform:scale(0.85); opacity:0; } 100% { transform:scale(1); opacity:1; } }
+.stat-card.visible { animation: statPop 0.4s ease forwards; }
+
+/* ── Skill chip wave on section enter ── */
+@keyframes chipIn { from { opacity:0; transform:scale(0.8); } to { opacity:1; transform:scale(1); } }
+.skill-group.visible .chip { animation: chipIn 0.3s ease both; }
+.skill-group.visible .chip:nth-child(1){animation-delay:0.05s}
+.skill-group.visible .chip:nth-child(2){animation-delay:0.10s}
+.skill-group.visible .chip:nth-child(3){animation-delay:0.15s}
+.skill-group.visible .chip:nth-child(4){animation-delay:0.20s}
+.skill-group.visible .chip:nth-child(5){animation-delay:0.25s}
+.skill-group.visible .chip:nth-child(6){animation-delay:0.30s}
+
+/* ── Contact item slide-in ── */
+@keyframes slideRight { from { opacity:0; transform:translateX(-20px); } to { opacity:1; transform:translateX(0); } }
+.clinks .citem { opacity:0; }
+.clinks.animated .citem:nth-child(1) { animation: slideRight 0.4s ease 0.1s forwards; }
+.clinks.animated .citem:nth-child(2) { animation: slideRight 0.4s ease 0.2s forwards; }
+.clinks.animated .citem:nth-child(3) { animation: slideRight 0.4s ease 0.3s forwards; }
+.clinks.animated .citem:nth-child(4) { animation: slideRight 0.4s ease 0.4s forwards; }
+
+/* ── Education card draw-in ── */
+@keyframes drawBorder { from { box-shadow: 0 0 0 0 rgba(56,189,248,0); } to { box-shadow: 0 0 0 1px rgba(56,189,248,0.3), 0 8px 32px rgba(56,189,248,0.08); } }
+.edu-card.visible { animation: drawBorder 0.8s ease 0.2s both; }
+@media(max-width:768px){
+  .hamburger { display:block; z-index:200; position:relative; }
+  .nav-links { position:fixed; top:60px; left:0; right:0; background:var(--surface); border-bottom:1px solid var(--border); flex-direction:column; gap:0; padding:1rem 0; display:none; z-index:150; }
+  .nav-links.open { display:flex; }
+  .nav-links a { padding:14px 6vw; display:block; font-size:14px; }
+  .hero-grid { grid-template-columns:1fr; gap:2rem; }
+  #hero { padding:6rem 5vw 3rem; min-height:auto; }
+  .hero-name { font-size:clamp(2rem,8vw,3rem); }
+  .hero-desc { font-size:14px; max-width:100%; }
+  .hero-btns { gap:0.75rem; }
+  .btn { font-size:12px; padding:10px 18px; }
+  .terminal { display:none; }
+  #about .about-grid { grid-template-columns:1fr; gap:2rem; }
+  .about-stats { grid-template-columns:1fr 1fr; }
+  .contact-grid { grid-template-columns:1fr; gap:2rem; }
+  .edu-card { flex-direction:column; gap:1rem; padding:1.5rem; }
+  section { padding:3.5rem 5vw; }
+  .section-title { font-size:1.5rem; margin-bottom:2rem; }
+  .section-title::after { max-width:100px; }
+  .skills-grid { grid-template-columns:1fr 1fr; gap:1rem; }
+  .projects-grid { grid-template-columns:1fr; }
+  .pcard { padding:1.25rem; }
+  .cform { padding:1.5rem; }
+  .contact-intro { font-size:14px; }
+}
+@media(max-width:400px){
+  .about-stats { grid-template-columns:1fr 1fr; }
+  .skills-grid { grid-template-columns:1fr; }
+  .hero-btns { flex-direction:column; }
+  .btn { width:100%; justify-content:center; }
+}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+<div class="bg-grid"></div>
+
+<nav>
+  <a class="nav-logo" href="#hero">pranjal<span>.dev</span></a>
+  <ul class="nav-links" id="navlinks">
+    <li><a href="#about">about</a></li>
+    <li><a href="#skills">skills</a></li>
+    <li><a href="#projects">projects</a></li>
+    <li><a href="#education">education</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="glow glow1"></div>
+  <div class="glow glow2"></div>
+  <div class="hero-grid">
+    <div>
+      <p class="hero-tag">Full Stack Developer</p>
+      <h1 class="hero-name"><span class="hi">Hi, I'm</span><br/><span class="highlight">Pranjal Patil</span></h1>
+      <p class="hero-role"><strong>Computer Engineering Student</strong> &nbsp;·&nbsp;</p>
+      <p class="hero-desc">Building web applications with Java, React, Spring Boot, and the MERN Stack. I turn ideas into working software — one commit at a time.</p>
+      <div class="hero-btns">
+        <a href="#projects" class="btn btn-primary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          View projects
+        </a>
+        <a href="#contact" class="btn btn-ghost">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Contact me
+        </a>
+      </div>
+    </div>
+    <div class="terminal">
+      <div class="terminal-bar">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="t-title">developer.json</span>
+      </div>
+      <div class="terminal-body">
+        <span class="t-line"><span class="t-prompt">➜</span> <span id="tcmd" style="color:var(--text)"></span><span class="cursor"></span></span>
+        <span class="t-line">&nbsp;</span>
+        <span class="t-line">{</span>
+        <span class="t-line">&nbsp;&nbsp;<span class="t-key">"name"</span>: <span class="t-str">"Pranjal Patil"</span>,</span>
+        <span class="t-line">&nbsp;&nbsp;<span class="t-key">"role"</span>: <span class="t-str">"Full Stack Developer"</span>,</span>
+        <span class="t-line">&nbsp;&nbsp;<span class="t-key">"location"</span>: <span class="t-str">"Thane, Maharashtra , India"</span>,</span>
+        <span class="t-line">&nbsp;&nbsp;<span class="t-key">"stack"</span>: [<span class="t-str">"React"</span>, <span class="t-str">"Spring Boot"</span>, <span class="t-str">"MySQL"</span>],</span>
+        <span class="t-line">&nbsp;&nbsp;<span class="t-key">"learning"</span>: <span class="t-str">"MERN Stack"</span>,</span>
+        <span class="t-line">&nbsp;&nbsp;<span class="t-key">"openTo"</span>: <span class="t-str">"Internships &amp; roles"</span>,</span>
+        <span class="t-line">&nbsp;&nbsp;<span class="t-key">"available"</span>: <span class="t-val">true</span></span>
+        <span class="t-line">}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <p class="eyebrow fade-up">// about me</p>
+    <h2 class="section-title fade-up">About</h2>
+    <div class="about-grid">
+      <div class="fade-up">
+        <p>I'm a <strong>Computer Engineering student</strong> at Watumull Institute of Electronics Engineering and Computer Technology, graduating in 2028.</p>
+        <p>I enjoy developing web applications and continuously learning new technologies. My current focus is <strong>Full Stack Development</strong> using React, Spring Boot, MySQL, and the MERN Stack.</p>
+        <p>I believe in writing clean, maintainable code and building software that solves real problems. Every project I take on is a chance to learn something new.</p>
+        <div class="about-btns">
+          <a href="https://github.com/Pranjal812" target="_blank" rel="noopener" class="btn btn-ghost">GitHub ↗</a>
+          <a href="https://linkedin.com/in/pranjal-patil-571bb736b" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn ↗</a>
+        </div>
+      </div>
+      <div class="about-stats fade-up">
+        <div class="stat-card"><span class="stat-num">2028</span><span class="stat-label">Graduation</span></div>
+        <div class="stat-card"><span class="stat-num">∞</span><span class="stat-label">Always Learning</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-inner">
+    <p class="eyebrow fade-up">// tech stack</p>
+    <h2 class="section-title fade-up">Skills</h2>
+    <div class="skills-grid">
+      <div class="skill-group fade-up">
+        <div class="sg-icon">🎨</div>
+        <p class="sg-name">Frontend</p>
+        <div class="chips">
+          <span class="chip">HTML5</span><span class="chip">CSS3</span>
+          <span class="chip">JavaScript</span><span class="chip">React.js</span>
+        </div>
+      </div>
+      <div class="skill-group fade-up">
+        <div class="sg-icon">⚙️</div>
+        <p class="sg-name">Backend</p>
+        <div class="chips">
+          <span class="chip">Java</span><span class="chip">Spring Boot</span>
+          <span class="chip">Python</span><span class="chip">REST APIs</span>
+          <span class="chip lrn">Node.js</span><span class="chip lrn">Express.js</span>
+        </div>
+      </div>
+      <div class="skill-group fade-up">
+        <div class="sg-icon">🗄️</div>
+        <p class="sg-name">Database</p>
+        <div class="chips">
+          <span class="chip">MySQL</span><span class="chip lrn">MongoDB</span>
+        </div>
+      </div>
+      <div class="skill-group fade-up">
+        <div class="sg-icon">🛠️</div>
+        <p class="sg-name">Tools</p>
+        <div class="chips">
+          <span class="chip">Git</span><span class="chip">GitHub</span>
+          <span class="chip">VS Code</span><span class="chip">IntelliJ IDEA</span>
+          <span class="chip">C++</span>
+        </div>
+      </div>
+    </div>
+    <p style="font-family:'Fira Code',monospace;font-size:12px;color:var(--accent2);margin-top:1.5rem;opacity:0.8;">* items marked are currently being learned (MERN Stack)</p>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-inner">
+    <p class="eyebrow fade-up">// what I've built</p>
+    <h2 class="section-title fade-up">Projects</h2>
+    <div class="projects-grid">
+      <div class="pcard fade-up">
+        <div class="pcard-head">
+          <div class="pcard-icon">🏥</div>
+          <div class="pcard-links">
+            <a href="https://github.com/Pranjal812/OPD-Management" target="_blank" rel="noopener" class="plink">GitHub ↗</a>
+          </div>
+        </div>
+        <h3 class="pcard-title">OPD Management System</h3>
+        <p class="pcard-desc">Hospital management system for handling patient records and appointments. Full CRUD operations, doctor management, and responsive UI for efficient hospital workflows.</p>
+        <div class="pcard-stack">
+          <span class="stag">Spring Boot</span><span class="stag">MySQL</span>
+          <span class="stag">HTML/CSS</span><span class="stag">JavaScript</span>
+        </div>
+      </div>
+      <div class="pcard fade-up">
+        <div class="pcard-head">
+          <div class="pcard-icon">🌤️</div>
+          <div class="pcard-links">
+            <a href="https://pranjal812.github.io/Weather/" target="_blank" rel="noopener" class="plink">Live ↗</a>
+            <a href="https://github.com/Pranjal812/Weather" target="_blank" rel="noopener" class="plink">GitHub ↗</a>
+          </div>
+        </div>
+        <h3 class="pcard-title">Weather Application</h3>
+        <p class="pcard-desc">Real-time weather forecasting app pulling live data from a weather API. Clean, responsive interface shows current conditions for any location worldwide.</p>
+        <div class="pcard-stack">
+          <span class="stag">HTML</span><span class="stag">CSS</span>
+          <span class="stag">JavaScript</span><span class="stag">Weather API</span>
+        </div>
+      </div>
+      <div class="pcard fade-up">
+        <div class="pcard-head">
+          <div class="pcard-icon">🏦</div>
+          <div class="pcard-links">
+            <a href="https://github.com/Pranjal812/VBS_" target="_blank" rel="noopener" class="plink">GitHub ↗</a>
+          </div>
+        </div>
+        <h3 class="pcard-title">Virtual Bank System</h3>
+        <p class="pcard-desc">A simple virtual banking system with core banking features including account management and transactions, built with Spring Boot backend and MySQL database.</p>
+        <div class="pcard-stack">
+          <span class="stag">Spring Boot</span><span class="stag">Java</span>
+          <span class="stag">JavaScript</span><span class="stag">MySQL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-inner">
+    <p class="eyebrow fade-up">// background</p>
+    <h2 class="section-title fade-up">Education</h2>
+    <div class="edu-card fade-up">
+      <div class="edu-icon">🎓</div>
+      <div>
+        <p class="edu-degree">Bachelor of Engineering — Computer Engineering</p>
+        <p class="edu-school">Watumull Institute of Electronics Engineering and Computer Technology</p>
+        <p class="edu-meta">Thane, Maharashtra, India</p>
+        <span class="edu-badge">Expected Graduation: 2028</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <p class="eyebrow fade-up">// get in touch</p>
+    <h2 class="section-title fade-up">Contact</h2>
+    <div class="contact-grid">
+    <div class="fade-up">
+        <div class="clinks">
+          <a href="tel:+918976152829" class="citem">
+            <span class="citem-icon">📞</span><span>+91 8976152829</span>
+          </a>
+          <a href="mailto:patilpranjaldinesh@gmail.com" class="citem">
+            <span class="citem-icon">✉️</span><span>patilpranjaldinesh@gmail.com</span>
+          </a>
+          <a href="https://github.com/Pranjal812" target="_blank" rel="noopener" class="citem">
+            <span class="citem-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            </span>
+            <span>github.com/Pranjal812</span>
+          </a>
+          <a href="https://linkedin.com/in/pranjal-patil-571bb736b" target="_blank" rel="noopener" class="citem">
+            <span class="citem-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </span>
+            <span>Pranjal Patil — LinkedIn</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Designed &amp; built by <a href="https://github.com/Pranjal812" target="_blank">Pranjal Patil</a> &nbsp;·&nbsp; 2026</p>
+</footer>
+
+<script>
+// Hamburger
+document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('navlinks').classList.toggle('open'));
+document.querySelectorAll('#navlinks a').forEach(a=>a.addEventListener('click',()=>document.getElementById('navlinks').classList.remove('open')));
+
+// Scroll progress bar
+const progressBar = document.getElementById('progress-bar');
+window.addEventListener('scroll',()=>{
+  const scrolled = window.scrollY;
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  progressBar.style.width = (scrolled / total * 100) + '%';
+});
+
+// Intersection observer for fade-up + special animations
+const obs = new IntersectionObserver(entries=>entries.forEach(e=>{
+  if(e.isIntersecting){
+    e.target.classList.add('visible');
+    // Trigger contact links animation
+    const clinks = e.target.querySelector('.clinks');
+    if(clinks) setTimeout(()=>clinks.classList.add('animated'), 200);
+  }
+}),{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.fade-up').forEach((el,i)=>{el.style.transitionDelay=(i%4)*0.08+'s';obs.observe(el);});
+
+// Active nav highlight on scroll
+const secs=document.querySelectorAll('section[id]');
+const nas=document.querySelectorAll('#navlinks a');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  secs.forEach(s=>{if(window.scrollY>=s.offsetTop-80)cur=s.id;});
+  nas.forEach(a=>{a.style.color=a.getAttribute('href')==='#'+cur?'var(--accent)':'';});
+});
+
+// Terminal typewriter
+const cmds=['cat developer.json','git status','npm run dev','java -jar app.jar','python app.py'];
+let ci=0,ch=0;
+const el=document.getElementById('tcmd');
+if(el){
+  setInterval(()=>{
+    if(ch<=cmds[ci].length){el.textContent=cmds[ci].slice(0,ch++);}
+    else{setTimeout(()=>{ci=(ci+1)%cmds.length;ch=0;},2000);}
+  },75);
+}
+
+// Mouse-follow glow on hero
+const hero = document.getElementById('hero');
+const glow1 = hero && hero.querySelector('.glow1');
+if(hero && glow1){
+  hero.addEventListener('mousemove', e=>{
+    const rect = hero.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    glow1.style.transform = `translate(${(x-250)*0.04}px, ${(y-250)*0.04}px) scale(1)`;
+  });
+  hero.addEventListener('mouseleave', ()=>{ glow1.style.transform=''; });
+}
+</script>
+</body>
+</html>
